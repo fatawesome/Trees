@@ -2,24 +2,24 @@ public class BalanceableBinaryTree<K,V> extends LinkedBinaryTree<Pair<K,V>> {
     protected static class BSTNode<E> extends Node<E> {
         int aux = 0;
 
-        public BSTNode(E value, Node<E> parent, Node<E> left, Node<E> right) {
+        BSTNode(E value, Node<E> parent, Node<E> left, Node<E> right) {
             super(value, parent, left, right);
         }
 
-        public int getAux() {
+        int getAux() {
             return aux;
         }
 
-        public void setAux(int aux) {
+        void setAux(int aux) {
             this.aux = aux;
         }
     }
 
-    public int getAux(Position<Pair<K,V>> p) {
+    int getAux(Position<Pair<K,V>> p) {
         return ((BSTNode<Pair<K,V>>) p).getAux();
     }
 
-    public void setAux(Position<Pair<K,V>> p, int value) {
+    void setAux(Position<Pair<K, V>> p, int value) {
         ((BSTNode<Pair<K,V>>) p).setAux(value);
     }
 
@@ -70,7 +70,7 @@ public class BalanceableBinaryTree<K,V> extends LinkedBinaryTree<Pair<K,V>> {
      * @param x position.
      * @return new subtree root.
      */
-    public Position<Pair<K,V>> restructure(Position<Pair<K,V>> x) {
+    Position<Pair<K,V>> restructure(Position<Pair<K, V>> x) {
         Position<Pair<K,V>> y = parent(x);
         System.out.println(y);
         Position<Pair<K,V>> z = parent(y);
