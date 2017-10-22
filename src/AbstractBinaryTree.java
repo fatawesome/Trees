@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+/**
+ * Same thing as about AbstractTree, but now we are abstracting
+ * @param <T>
+ */
 public abstract class AbstractBinaryTree<T> extends AbstractTree<T> implements BinaryTree<T> {
 
     public Position<T> sibling(Position<T> p) {

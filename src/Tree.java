@@ -1,5 +1,9 @@
 import java.util.Iterator;
 
+/**
+ * Interface abstracts general methods of working with the trees of any kind.
+ * @param <T>
+ */
 public interface Tree<T> extends Iterable {
     Position<T> root();
     Position<T> parent(Position<T> p) throws IllegalArgumentException;

@@ -1,6 +1,30 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 
-public class Heap<K extends Comparable<? super K>,V> extends AbstractSortedMap<K,V> {
+public class Heap<K extends Comparable<? super K>,V> {
+
+    private Comparator<K> comp = Comparator.<K>naturalOrder();
+
+    /** Method for comparing two entries according to key */
+    protected int compare(Pair<K,V> a, Pair<K,V> b) {
+        return comp.compare(a.getKey(), b.getKey());
+    }
+
+    /** Method for comparing a key and an entry's key */
+    protected int compare(K a, Pair<K,V> b) {
+//        System.out.println(a + " " + b.getKey());
+        return comp.compare(a, b.getKey());
+    }
+
+    /** Method for comparing a key and an entry's key */
+    protected int compare(Pair<K,V> a, K b) {
+        return comp.compare(a.getKey(), b);
+    }
+
+    /** Method for comparing two keys */
+    protected int compare(K a, K b) {
+        return comp.compare(a, b);
+    }
 
     /**
      * Array to store the data.

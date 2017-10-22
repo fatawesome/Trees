@@ -1,5 +1,11 @@
 import java.util.Iterator;
 
+/**
+ * AbstractTree implements some of the methods to work with the tree,
+ * but still has a lot of abstract things, so we can easily extend
+ * other different trees from here and be able to use these methods.
+ * @param <T>
+ */
 public abstract class AbstractTree<T> implements Tree<T> {
     public boolean isInternal(Position<T> p) {
         return numChildren(p) > 0;

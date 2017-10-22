@@ -1,5 +1,5 @@
 /**
- * Represents an entry in the hash table.
+ * Represents an entry.
  * @param <K> Type of Key
  * @param <V> Type of Value
  */

@@ -1,14 +1,24 @@
 import java.util.ArrayList;
 
+/**
+ * Class represents the LinkedBinaryTree structure.
+ * It is an intermediate step to more complicated trees.
+ *
+ * @param <T>
+ */
 public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
 
+    /**
+     * Simple node of the tree.
+     * It implements the Position interface, thereby supports iterative collections.
+     */
     protected static class Node<T> implements Position<T> {
         private T value;
         private Node<T> parent;
         private Node<T> left;
         private Node<T> right;
 
-        public Node(T value, Node<T> parent, Node<T> left, Node<T> right) {
+        Node(T value, Node<T> parent, Node<T> left, Node<T> right) {
             this.value = value;
             this.parent = parent;
             this.left = left;
@@ -18,45 +28,67 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
         public T getElement() {
             return value;
         }
-        public Node<T> getParent() {
+
+        Node<T> getParent() {
             return parent;
         }
 
-        public Node<T> getLeft() {
+        Node<T> getLeft() {
             return left;
         }
 
-        public Node<T> getRight() {
+        Node<T> getRight() {
             return right;
         }
 
-        public void setValue(T value) {
+        void setValue(T value) {
             this.value = value;
         }
 
-        public void setLeft(Node<T> left) {
+        void setLeft(Node<T> left) {
             this.left = left;
         }
 
-        public void setRight(Node<T> right) {
+        void setRight(Node<T> right) {
             this.right = right;
         }
 
-        public void setParent(Node<T> parent) {
+        void setParent(Node<T> parent) {
             this.parent = parent;
         }
     }
 
+    /**
+     * Returns new Node with the given parameters.
+     *
+     * @param value  of the node.
+     * @param parent of the node.
+     * @param left   child of the node.
+     * @param right  child of the node.
+     * @return new Node.
+     */
     protected Node<T> createNode(T value, Node<T> parent, Node<T> left, Node<T> right) {
-        return new Node<T>(value, parent, left, right);
+        return new Node<>(value, parent, left, right);
     }
 
-    protected Node<T> root = null;
+    Node<T> root = null;
     private int size = 0;
 
-    public LinkedBinaryTree() {}
+    /**
+     * Simple constructor.
+     */
+    LinkedBinaryTree() {
+    }
 
-    protected Node<T> validate(Position<T> p) throws IllegalArgumentException {
+    /**
+     * Method validates given Position, so we can be sure, that it is not null and
+     * doesn't have any illegal parameters.
+     *
+     * @param p Position.
+     * @return Node of the given Position.
+     * @throws IllegalArgumentException if something is wrong with the position.
+     */
+    Node<T> validate(Position<T> p) throws IllegalArgumentException {
         if (!(p instanceof Node)) {
             throw new IllegalArgumentException("Not valid position type");
         }
@@ -67,10 +99,16 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
         return n;
     }
 
+    /**
+     * @return size of the tree.
+     */
     public int size() {
         return size;
     }
 
+    /**
+     * Method supports preorder().
+     */
     private void preorderSubtree(Position<T> p, ArrayList<Position<T>> snapshot) {
         if (isInternal(p))
             snapshot.add(p);
@@ -78,13 +116,20 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
             preorderSubtree(c, snapshot);
     }
 
-    public Iterable<Position<T>> preorder() {
+    /**
+     * @return Iterable collection of elements of the tree
+     * using preorder rule.
+     */
+    Iterable<Position<T>> preorder() {
         ArrayList<Position<T>> snapshot = new ArrayList<>();
         if (!isEmpty())
             preorderSubtree(root(), snapshot);
         return snapshot;
     }
 
+    /**
+     * Method supports inorder();
+     */
     private void inorderSubtree(Position<T> p, ArrayList<Position<T>> snapshot) {
         if (p.getElement() != null) {
             inorderSubtree(left(p), snapshot);
@@ -93,7 +138,12 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
         }
     }
 
-    public Iterable<Position<T>> inorder() {
+    /**
+     * @return I
+     * Iterable collection of elements of the tree
+     * using inorder rule.
+     */
+    Iterable<Position<T>> inorder() {
         ArrayList<Position<T>> snapshot = new ArrayList<>();
         if (!isEmpty())
             inorderSubtree(root(), snapshot);
@@ -114,17 +164,30 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
         return n.getParent();
     }
 
+    /**
+     * Method returns the left child of the given position.
+     */
     public Position<T> left(Position<T> p) throws IllegalArgumentException {
         Node<T> n = validate(p);
         return n.getLeft();
     }
 
+    /**
+     * Method returns the right child of the given position.
+     */
     public Position<T> right(Position<T> p) throws IllegalArgumentException {
         Node<T> n = validate(p);
         return n.getRight();
     }
 
-    public Position<T> addRoot(T value) throws IllegalStateException {
+    /**
+     * Method adds the new root to the tree.
+     *
+     * @param value of the new root.
+     * @return new root.
+     * @throws IllegalStateException if tree is already not empty.
+     */
+    Position<T> addRoot(T value) throws IllegalStateException {
         if (!isEmpty())
             throw new IllegalStateException("Tree is not empty");
         root = createNode(value, null, null, null);
@@ -132,7 +195,10 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
         return root;
     }
 
-    public Position<T> addLeft(Position<T> p, T value) throws IllegalArgumentException {
+    /**
+     * Method adds new left child to the given position.
+     */
+    Position<T> addLeft(Position<T> p, T value) throws IllegalArgumentException {
         Node<T> parent = validate(p);
         if (parent.getLeft() != null)
             throw new IllegalArgumentException("P already has left child");
@@ -142,7 +208,10 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
         return child;
     }
 
-    public Position<T> addRight(Position<T> p, T value) throws IllegalArgumentException {
+    /**
+     * Method adds new right child to the given position.
+     */
+    Position<T> addRight(Position<T> p, T value) throws IllegalArgumentException {
         Node<T> parent = validate(p);
         if (parent.getRight() != null)
             throw new IllegalArgumentException("P already has right child");
@@ -152,7 +221,10 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
         return child;
     }
 
-    public T set(Position<T> p, T value) throws IllegalArgumentException {
+    /**
+     * Method sets new value to the given position.
+     */
+    T set(Position<T> p, T value) throws IllegalArgumentException {
         Node<T> n = validate(p);
         T temp = n.getElement();
         n.setValue(value);
@@ -160,29 +232,35 @@ public class LinkedBinaryTree<T> extends AbstractBinaryTree<T> {
     }
 
     /**
-     * Attach tree1 and tree2 as left and right subtrees respectively to node P
-     * @param p node
-     * @param tree1 left subtree
-     * @param tree2 right subtree
+     * Method removes the given position,
+     * but only, if it has not more than one child.
      */
-    public void attach(Position<T> p, LinkedBinaryTree<T> tree1, LinkedBinaryTree<T> tree2) {
+    T remove(Position<T> p) throws IllegalArgumentException {
         Node<T> n = validate(p);
-        if (isInternal(p))
-            throw new IllegalArgumentException("P must be a leaf");
-        size += tree1.size() + tree2.size();
-        if (!tree1.isEmpty()) {
-            tree1.root.setParent(n);
-            n.setLeft(tree1.root);
-            tree1.root = null;
-            tree1.size = 0;
-        }
-        if (!tree2.isEmpty()) {
-            tree2.root.setParent(n);
-            n.setRight(tree2.root);
-            tree2.root = null;
-            tree2.size = 0;
-        }
-    }
+        if (numChildren(p) == 2)
+            throw new IllegalArgumentException("p has two children");
+        Node<T> child = (n.getLeft() != null ? n.getLeft() : n.getRight());
 
+        if (child != null)
+            child.setParent(n.getParent());
+        if (n == root)
+            root = child;
+        else {
+            Node<T> parent = n.getParent();
+            if (n == parent.getLeft())
+                parent.setLeft(child);
+            else
+                parent.setRight(child);
+        }
+
+        size--;
+        T temp = n.getElement();
+        n.setValue(null);
+        n.setLeft(null);
+        n.setRight(null);
+        n.setParent(n);
+
+        return temp;
+    }
 
 }

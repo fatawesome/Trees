@@ -1,29 +1,45 @@
-import com.sun.xml.internal.bind.annotation.OverrideAnnotationOf;
+/**
+ * Impleementation of the AVL tree.
+ * @param <K>
+ * @param <V>
+ */
+public class MyAVL<K extends Comparable<? super K>, V> extends BinarySearchTree<K, V> {
 
-import java.util.Comparator;
-
-public class MyAVL<K extends Comparable<? super K>,V> extends TreeMap<K,V> {
-    public MyAVL() {
+    /**
+     * Constructor
+     */
+    MyAVL() {
         super();
     }
 
-    public MyAVL(Comparator<K> comp) {
-        super(comp);
-    }
-
+    /**
+     * Method supports the following trinode restructure.
+     *
+     * @param p position.
+     * @return aux of the given position.
+     */
     public int height(Position<Pair<K, V>> p) {
         return tree.getAux(p);
     }
 
-    protected void recomputeHeight(Position<Pair<K,V>> p) {
+    /**
+     * Recalculates height of the given
+     *
+     * @param p
+     */
+    private void recomputeHeight(Position<Pair<K, V>> p) {
         tree.setAux(p, 1 + Math.max(height(left(p)), height(right(p))));
     }
 
-    protected boolean isBalanced(Position<Pair<K,V>> p) {
+    private boolean isBalanced(Position<Pair<K, V>> p) {
         return Math.abs(height(left(p)) - height(right(p))) <= 1;
     }
 
-    protected Position<Pair<K,V>> tallerChild(Position<Pair<K,V>> p) {
+    /**
+     * Method returns the taller child of the given position.
+     * It supports the rebalance() mrthod.
+     */
+    private Position<Pair<K, V>> tallerChild(Position<Pair<K, V>> p) {
         if (height(left(p)) > height(right(p)))
             return left(p);
         if (height(left(p)) < height(right(p)))
@@ -36,7 +52,11 @@ public class MyAVL<K extends Comparable<? super K>,V> extends TreeMap<K,V> {
             return right(p);
     }
 
-    protected void rebalance(Position<Pair<K,V>> p) {
+    /**
+     * Method rebalances the subtree with the given root position
+     * using Treenode restructure from the BalanceableBinaryTree class.
+     */
+    private void rebalance(Position<Pair<K, V>> p) {
         int oldHeight, newHeight;
         do {
             oldHeight = height(p);
@@ -51,12 +71,27 @@ public class MyAVL<K extends Comparable<? super K>,V> extends TreeMap<K,V> {
         } while (oldHeight != newHeight && p != null);
     }
 
-    protected void rebalanceInsert(Position<Pair<K,V>> p) {
+    /**
+     * Supports rebalancing after insertion.
+     */
+    protected void rebalanceInsert(Position<Pair<K, V>> p) {
         rebalance(p);
     }
 
-    protected void rebalanceDelete(Position<Pair<K,V>> p) {
+    /**
+     * Supports rebalancing after deletion.
+     */
+    protected void rebalanceDelete(Position<Pair<K, V>> p) {
         if (!isRoot(p))
             rebalance(parent(p));
     }
+
+    /**
+     * Method implements the feature, which is asked in the task.
+     * I don't know, why is it so strange (easy).
+     */
+    int getThisSum() {
+        return (size() * (size() - 1)) / 2;
+    }
+
 }
